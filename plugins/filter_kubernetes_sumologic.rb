@@ -16,6 +16,7 @@ module Fluent
     config_param :exclude_pod_regex, :string, :default => nil
     config_param :exclude_container_regex, :string, :default => nil
     config_param :exclude_host_regex, :string, :default => nil
+    config_param :source_environment, :string, :default => nil
 
     def configure(conf)
       super
@@ -38,6 +39,10 @@ module Fluent
         sumo_metadata[:category] = @source_category.dup
         unless @source_category_prefix.nil?
           sumo_metadata[:category].prepend(@source_category_prefix)
+        end
+        unless @source_environment.nil?
+          sumo_metadata[:category].prepend("/")
+          sumo_metadata[:category].prepend(@source_environment)
         end
       end
 
