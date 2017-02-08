@@ -1,4 +1,4 @@
-FROM 3dsim/fluentd:v0.14.12
+FROM 3dsim/fluentd:v0.12.32
 WORKDIR /home/fluent
 ENV PATH /home/fluent/.gem/ruby/2.3.0/bin:$PATH
 
