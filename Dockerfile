@@ -1,13 +1,31 @@
-FROM 3dsim/fluentd:v0.12.32
+FROM 3dsim/fluentd:v0.12-debian
 WORKDIR /home/fluent
 ENV PATH /home/fluent/.gem/ruby/2.3.0/bin:$PATH
 
 USER root
 
-RUN apk --no-cache --update add sudo build-base ruby-dev libffi-dev && \
-    sudo -u fluent gem install fluent-plugin-record-reformer fluent-plugin-kubernetes_metadata_filter fluent-plugin-sumologic_output && \
-    rm -rf /home/fluent/.gem/ruby/2.3.0/cache/*.gem && sudo -u fluent gem sources -c && \
-    apk del sudo build-base ruby-dev && rm -rf /var/cache/apk/*
+RUN apt-get update \
+ && apt-get upgrade -y \
+ && apt-get install -y --no-install-recommends \
+            ca-certificates \
+            ruby \
+ && buildDeps=" \
+      make gcc g++ libc-dev \
+      ruby-dev libffi-dev sudo\
+    " \
+ && apt-get install -y --no-install-recommends $buildDeps \
+ && update-ca-certificates
+
+RUN sudo -u fluent gem install fluent-plugin-record-reformer fluent-plugin-kubernetes_metadata_filter fluent-plugin-sumologic_output && \
+    rm -rf /home/fluent/.gem/ruby/2.3.0/cache/*.gem && sudo -u fluent gem sources -c
+
+# Cleanup
+RUN apt-get purge -y --auto-remove \
+                  -o APT::AutoRemove::RecommendsImportant=false \
+                  $buildDeps \
+ && rm -rf /var/lib/apt/lists/* \
+ && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
+
 
 RUN mkdir -p /mnt/pos
 EXPOSE 24284
