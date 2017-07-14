@@ -28,6 +28,8 @@ RUN apt-get purge -y --auto-remove \
 
 
 RUN mkdir -p /mnt/pos
+RUN mkdir -p /var/log
+
 EXPOSE 24284
 
 RUN mkdir -p /fluentd/conf.d && \

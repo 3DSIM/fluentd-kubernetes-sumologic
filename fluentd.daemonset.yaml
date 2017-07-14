@@ -26,7 +26,7 @@ spec:
         imagePullPolicy: Always
         volumeMounts:
         - name: host-logs
-          mountPath: /mnt/log/
+          mountPath: /var/log/
           readOnly: true
         - name: docker-logs
           mountPath: /var/lib/docker/
