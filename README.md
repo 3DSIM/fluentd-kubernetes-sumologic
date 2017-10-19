@@ -2,6 +2,11 @@
 
 This is a [fluentd](http://www.fluentd.org/) container, designed to run as a Kubernetes [DaemonSet](http://kubernetes.io/docs/admin/daemons/). It will run an instance of this container on each physical underlying host in the cluster. The goal is to pull all the kubelet, docker daemon and container logs from the host then to ship them off to [SumoLogic](https://www.sumologic.com/) in json or text format.
 
+## Technical Specifications
+
+### Platforms Supported
+Linux
+
 ## Setup
 ### SumoLogic
 First things first, you need a HTTP collector in SumoLogic that the container can send logs to via HTTP.
@@ -122,3 +127,9 @@ Simple as that really, your logs should be getting streamed to SumoLogic in json
 
 ### Containers
 ![Docker Logs](/screenshots/container.png)
+
+## 3DSIM Contributors
+* Ryan Walls
+
+## Original release
+January 2017
